@@ -8,11 +8,6 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
 //
@@ -23,3 +18,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+import * as loginSelect from '../integration/selectors/login_selectors';
+
+// TODO: better to do through API
+Cypress.Commands.add("login", (email, password) => {
+    cy.visit('/login');
+    loginSelect.emailField()
+      .type(email);
+    loginSelect.passwordField()
+      .type(password);
+    loginSelect.submitButton()
+      .click();
+ })
