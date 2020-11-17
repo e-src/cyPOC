@@ -21,7 +21,7 @@
 
 import * as loginSelect from '../integration/selectors/login_selectors';
 
-// TODO: better to do through API
+// TODO: replace with API implementation
 Cypress.Commands.add("login", (email, password) => {
     cy.visit('/login');
     loginSelect.emailField()
@@ -30,4 +30,18 @@ Cypress.Commands.add("login", (email, password) => {
       .type(password);
     loginSelect.submitButton()
       .click();
- })
+ });
+
+ Cypress.Commands.add("loginAPI", (email, password) => {
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:3000/api/users/login',
+    // form: true, // indicates the body should be form urlencoded and sets Content-Type: application/x-www-form-urlencoded headers
+    body: {
+      "user": {
+        "email": "user@local.host",
+        "password": "user"
+      }
+    }
+  })
+})
