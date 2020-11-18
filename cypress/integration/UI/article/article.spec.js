@@ -58,6 +58,12 @@ describe('New Post use cases', () => {
       })
     });
 
+    it('user can delete its comment', () => {
+      
+    });
 
+    it('user cannot delete admin\'s comment', () => {
+      
+    });
 
   })
