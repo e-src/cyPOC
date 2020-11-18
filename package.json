@@ -5,6 +5,7 @@
   "scripts": {
     "cy:ui": "cypress run --spec 'cypress/integration/UI/**/*' --headless --browser chrome",
     "cy:api": "cypress run --spec 'cypress/integration/API/**/*' --headless --browser chrome",
+    "cy:all": "cypress run --spec 'cypress/integration/**/*' --headless --browser chrome",
     "cy:wip": "cypress run --spec 'cypress/integration/UI/editor/**/*' --headless --browser chrome"
   }
 }

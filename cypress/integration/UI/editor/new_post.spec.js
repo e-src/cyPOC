@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 
 // import a set of selectors specific to the editor page
-import * as select from '../../selectors/editor_selectors';
+import * as select from '../../../selectors/editor_selectors';
+import { articleContent } from '../../../selectors/article_selector';
 
 describe('New Post use cases', () => {
 
@@ -42,8 +43,9 @@ describe('New Post use cases', () => {
         .type(body);
       select.publishButton()
         .click();
+      // TODO: this piece goes into article's area
       cy.contains('h1', title);
-      cy.get('div.row article-content')
+      articleContent()
         .should('contain', body);
     });
 

@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 // import a set of selectors specific to the login page
-import * as select from '../../selectors/login_selectors';
+import * as select from '../../../selectors/login_selectors';
 
 describe('Login page use cases', () => {
 

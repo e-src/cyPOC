@@ -19,7 +19,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import * as loginSelect from '../integration/selectors/login_selectors';
+import * as loginSelect from '../selectors/login_selectors';
 
  Cypress.Commands.add("login", (email, password) => {
 
@@ -36,6 +36,8 @@ import * as loginSelect from '../integration/selectors/login_selectors';
   //   }
   // })
 
+  cy.pause()
+
   cy.visit('/login');
   loginSelect.emailField()
     .type(email);
@@ -43,5 +45,7 @@ import * as loginSelect from '../integration/selectors/login_selectors';
     .type(password);
   loginSelect.submitButton()
     .click();
+  cy.contains('a', 'Your Feed')
+    .should('have.class', 'nav-link active');
 
 })
