@@ -18,3 +18,6 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// Import xpath command. Source: https://github.com/cypress-io/cypress-xpath
+require('cypress-xpath')

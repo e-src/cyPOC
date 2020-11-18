@@ -19,15 +19,33 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import * as loginSelect from '../integration/selectors/login_selectors';
+import * as loginSelect from '../selectors/login-selectors';
 
-// TODO: better to do through API
-Cypress.Commands.add("login", (email, password) => {
-    cy.visit('/login');
-    loginSelect.emailField()
-      .type(email);
-    loginSelect.passwordField()
-      .type(password);
-    loginSelect.submitButton()
-      .click();
- })
+ Cypress.Commands.add("login", (email, password) => {
+
+  // TODO: needs refactoring. does not properly authentifcate at the moment
+
+  // cy.request({
+  //   method: 'POST',
+  //   url: `${Cypress.config('API_ROOT')}/users/login`,
+  //   body: {
+  //     "user": {
+  //       "email": email,
+  //       "password": password
+  //     }
+  //   }
+  // })
+
+  cy.pause()
+
+  cy.visit('/login');
+  loginSelect.emailField()
+    .type(email);
+  loginSelect.passwordField()
+    .type(password);
+  loginSelect.submitButton()
+    .click();
+  cy.contains('a', 'Your Feed')
+    .should('have.class', 'nav-link active');
+
+})
