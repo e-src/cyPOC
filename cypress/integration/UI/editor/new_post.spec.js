@@ -20,12 +20,31 @@ describe('New Post use cases', () => {
           .should('have.attr', 'placeholder', 'What\'s this article about?');
         select.articleBody()
           .should('have.attr', 'placeholder', 'Write your article (in markdown)');  
-        // TODO: find a proper css selector for the tags field
-        // cy.get('input[class="form-control"]:nth-of-type(3)')
-        //   .should('have.attr', 'placeholder', 'Enter tags');
+        select.articleTags()
+          .should('have.attr', 'placeholder', 'Enter tags');
         select.publishButton()
           .should('have.text', 'Publish Article')
           .and('be.enabled');
+    });
+
+    it('publishes a new post', () => {
+
+      let title = 'Look at this cool article!';
+      let about = 'This article is about.. nothing, really.';
+      let body = 'How much ground would a groundhog hog, if a groundhog could hog ground?\n' +
+      'A groundhog would hog all the ground he could hog, if a groundhog could hog ground.';
+
+      select.articleTitle()
+        .type(title);
+      select.articleAbout()
+        .type(about);
+      select.articleBody()
+        .type(body);
+      select.publishButton()
+        .click();
+      cy.contains('h1', title);
+      cy.get('div.row article-content')
+        .should('contain', body);
     });
 
   })

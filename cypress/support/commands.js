@@ -22,14 +22,26 @@
 import * as loginSelect from '../integration/selectors/login_selectors';
 
  Cypress.Commands.add("login", (email, password) => {
-  cy.request({
-    method: 'POST',
-    url: `${Cypress.config('API_ROOT')}/users/login`,
-    body: {
-      "user": {
-        "email": email,
-        "password": password
-      }
-    }
-  })
+
+  // TODO: needs refactoring. does not properly authentifcate at the moment
+
+  // cy.request({
+  //   method: 'POST',
+  //   url: `${Cypress.config('API_ROOT')}/users/login`,
+  //   body: {
+  //     "user": {
+  //       "email": email,
+  //       "password": password
+  //     }
+  //   }
+  // })
+
+  cy.visit('/login');
+  loginSelect.emailField()
+    .type(email);
+  loginSelect.passwordField()
+    .type(password);
+  loginSelect.submitButton()
+    .click();
+
 })
