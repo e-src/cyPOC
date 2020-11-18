@@ -19,7 +19,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import * as loginSelect from '../selectors/login_selectors';
+import * as loginSelect from '../selectors/login-selectors';
 
  Cypress.Commands.add("login", (email, password) => {
 

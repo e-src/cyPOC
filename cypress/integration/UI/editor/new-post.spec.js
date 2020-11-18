@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
 // import a set of selectors specific to the editor page
-import * as select from '../../../selectors/editor_selectors';
-import { articleContent } from '../../../selectors/article_selector';
+import * as select from '../../../selectors/editor-selectors';
+import { articleContent } from '../../../selectors/article-selector';
 
 describe('New Post use cases', () => {
 
