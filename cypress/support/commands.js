@@ -19,33 +19,25 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import * as loginSelect from '../selectors/login-selectors';
+// import * as loginSelect from '../selectors/login-selectors';
 
- Cypress.Commands.add("login", (email, password) => {
+Cypress.Commands.add("login", (email, password) => {
+  cy.request({
+    method: 'POST',
+    url: `${Cypress.config('API_ROOT')}/users/login`,
+    body: {
+      "user": {
+        "email": email,
+        "password": password
+      }
+    }
+  })
+  .then((response) => {
+    window.localStorage.setItem('jwt', response.body.user.token);
+  })
+  cy.visit('/');
+});
 
-  // TODO: needs refactoring. does not properly authentifcate at the moment
-
-  // cy.request({
-  //   method: 'POST',
-  //   url: `${Cypress.config('API_ROOT')}/users/login`,
-  //   body: {
-  //     "user": {
-  //       "email": email,
-  //       "password": password
-  //     }
-  //   }
-  // })
-
-  cy.pause()
-
-  cy.visit('/login');
-  loginSelect.emailField()
-    .type(email);
-  loginSelect.passwordField()
-    .type(password);
-  loginSelect.submitButton()
-    .click();
-  cy.contains('a', 'Your Feed')
-    .should('have.class', 'nav-link active');
-
-})
+Cypress.Commands.add("resetDB", () => {
+  cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
+});

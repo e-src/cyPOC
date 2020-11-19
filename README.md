@@ -11,3 +11,9 @@ Backend Node (Express + Mongoose): https://github.com/gothinkster/node-express-r
 MongoDB service commands:
 Start: brew services start mongodb-community@4.4
 Stop: brew services stop mongodb-community@4.4
+
+mongodump:
+mongodump -d conduit -o ~/mongodb-backup
+
+mongorestore:
+mongorestore --drop -d conduit ~/mongodb-backup/conduit

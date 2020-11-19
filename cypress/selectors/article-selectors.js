@@ -17,4 +17,12 @@ export const commentSection = () => cy.get(COMMENT_SECTION);
 export const postCommentButton = () => cy.get(POST_COMMENT_BUTTON);
 
 // parametrized getters
+<<<<<<< HEAD
 export const postedComment = (comment) => cy.xpath(`//p[contains(text(), "${comment}")]`);
+=======
+export const postedComment = (comment) => cy.xpath(`//p[contains(text(), "${comment}")]`);
+// I'm not proud of this one. TODO: look for a better solution
+export const deleteButtonForComment = (comment) => {
+    return cy.xpath(`//p[contains(text(),"${comment}")]/parent::div/following-sibling::div[@class="card-footer"]/span[@class="mod-options"]`);
+}
+>>>>>>> 04554d866088dd27c5ec00c916575d15d292fe05
