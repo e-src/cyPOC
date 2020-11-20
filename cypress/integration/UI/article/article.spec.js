@@ -2,13 +2,13 @@
 
 // import a set of selectors
 import * as select from '../../../selectors/article-selectors';
+import * as editorSelector from '../../../selectors/editor-selectors';
 import { findArticleByTitle } from '../../../selectors/feed-selectors';
 import { findArticleByAboutText } from '../../../selectors/feed-selectors';
 
 describe('New Post use cases', () => {
 
   before(() => {
-    // cy.exec('mongorestore --drop -d conduit ~/mongodb-backup/conduit');
     cy.resetDB();
   })
 
@@ -68,7 +68,6 @@ describe('New Post use cases', () => {
     cy.fixture('default-article').as('article').then((article) => {
       findArticleByTitle(article.title)
         .click();
-      cy.pause();
       select.deleteButtonForComment(article.userComment)
         .should('exist')
         .click();
@@ -81,10 +80,53 @@ describe('New Post use cases', () => {
     cy.fixture('default-article').as('article').then((article) => {
       findArticleByTitle(article.title)
         .click();
-      cy.pause();
       select.deleteButtonForComment(article.adminComment)
         .should('not.exist');      
     })
   });
 
-  })
+  it('user cannot edit/delete admin\'s article', () => {
+    cy.fixture('default-article').then((article) => {
+      findArticleByTitle(article.title)
+        .click();
+    select.deleteArticle()
+      .should('not.exist');
+    select.editArticle()
+      .should('not.exist');
+    })    
+  });
+
+  it('user can delete their article', () => {
+    cy.fixture('user-articles').then((articles) => {
+      findArticleByTitle(articles.articleToDelete)
+        .click();
+    select.deleteArticle()
+      .should('exist')
+      .click()
+    cy.contains('a', 'Your Feed')
+      .should('have.class', 'active');
+    }) 
+  });
+
+  it('user can edit their article', () => {
+
+    let title = 'Edited Article';
+
+    cy.fixture('user-articles').then((articles) => {
+      findArticleByTitle(articles.articleToEdit)
+        .click();
+    select.editArticle()
+      .should('exist')
+      .click()
+    cy.location('pathname')
+      .should('contain', 'editor/article-to-edit');
+    editorSelector.articleTitle()
+      .type('{selectall}{backspace}' + title);
+    editorSelector.publishButton()
+      .click();
+    cy.contains('h1', title);
+    
+    })
+  });
+
+})
