@@ -90,7 +90,7 @@ describe('Article use cases', () => {
       findArticleByTitle(article.title)
         .click();
     select.deleteArticle()
-      .should('not.exist'); // TODO: remove this intentional error
+      .should('not.exist');
     select.editArticle()
       .should('not.exist');
     })    
