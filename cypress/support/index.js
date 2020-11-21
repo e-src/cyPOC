@@ -14,10 +14,39 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+import addContext from 'mochawesome/addContext';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
 // Import xpath command. Source: https://github.com/cypress-io/cypress-xpath
-require('cypress-xpath')
+require('cypress-xpath');
+
+// code that will be listening on the test:after:run event (for adding the screenshot to the test result)
+Cypress.on('test:after:run', (test, runnable) => {
+
+  if (test.state === 'failed') {
+    let item = runnable
+    const nameParts = [runnable.title]
+
+    while (item.parent) {
+      nameParts.unshift(item.parent.title)
+      item = item.parent
+    }
+
+    if (runnable.hookName) {
+      nameParts.push(`${runnable.hookName} hook`)
+    }
+
+    const fullTestName = nameParts
+            .filter(Boolean)
+            .join(' -- ')
+
+    const imageUrl = `screenshots/${
+      Cypress.spec.name
+    }/${fullTestName} (failed).png`
+
+    addContext({ test }, imageUrl)
+  }
+});

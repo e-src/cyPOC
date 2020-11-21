@@ -6,7 +6,7 @@ import * as editorSelector from '../../../selectors/editor-selectors';
 import { findArticleByTitle } from '../../../selectors/feed-selectors';
 import { findArticleByAboutText } from '../../../selectors/feed-selectors';
 
-describe('New Post use cases', () => {
+describe('Article use cases', () => {
 
   before(() => {
     cy.resetDB();
@@ -34,7 +34,7 @@ describe('New Post use cases', () => {
     })
   });
 
-  it('confirms user cannot edit or delete admin\'s article', () => {
+  it('confirms user cannot edit or delete admin article', () => {
     cy.fixture('default-article').as('article').then((article) => {
       findArticleByTitle(article.title)
         .click();
@@ -45,7 +45,7 @@ describe('New Post use cases', () => {
     })
   });
 
-  it('user can post a comment ', () => {
+  it('user can post a comment', () => {
 
     let comment = 'Here goes my comment';
 
@@ -76,7 +76,7 @@ describe('New Post use cases', () => {
     })
   });
 
-  it('user cannot delete admin\'s comment', () => {
+  it('user cannot delete admin comment', () => {
     cy.fixture('default-article').as('article').then((article) => {
       findArticleByTitle(article.title)
         .click();
@@ -85,12 +85,12 @@ describe('New Post use cases', () => {
     })
   });
 
-  it('user cannot edit/delete admin\'s article', () => {
+  it('user cannot edit or delete admin article', () => {
     cy.fixture('default-article').then((article) => {
       findArticleByTitle(article.title)
         .click();
     select.deleteArticle()
-      .should('not.exist');
+      .should('not.exist'); // TODO: remove this intentional error
     select.editArticle()
       .should('not.exist');
     })    

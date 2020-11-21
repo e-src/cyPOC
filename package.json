@@ -1,12 +1,27 @@
 {
   "devDependencies": {
     "cypress": "^5.6.0",
-    "cypress-xpath": "^1.6.1"
+    "cypress-multi-reporters": "^1.4.0",
+    "cypress-xpath": "^1.6.1",
+    "mocha": "^8.2.1",
+    "mochawesome": "^6.2.1",
+    "mochawesome-merge": "^4.2.0",
+    "mochawesome-report-generator": "^5.1.0",
+    "npm-run-all": "^4.1.5"
   },
   "scripts": {
-    "cy:ui": "cypress run --spec 'cypress/integration/UI/**/*' --headless --browser chrome",
-    "cy:api": "cypress run --spec 'cypress/integration/API/**/*' --headless --browser chrome",
-    "cy:all": "cypress run --spec 'cypress/integration/**/*' --headless --browser chrome",
-    "cy:wip": "cypress run --spec 'cypress/integration/UI/article/**/*' --headless --browser chrome"
+    "report": "run-s report:*",
+    "report:merge": "mochawesome-merge cypress/results/json/*.json > cypress/results/mochawesome-bundle.json",
+    "report:generate": "marge cypress/results/mochawesome-bundle.json -o cypress/reports/html",
+    "report:copyScreenshots": "cp -r cypress/screenshots cypress/reports/html/screenshots",
+    "cleanup": "rm -rf cypress/screenshots/* cypress/results/* cypress/reports/*",
+    "precy:run:all": "npm run cleanup",
+    "cy:run:all": "cypress run --headless --browser chrome",
+    "precy:run:ui": "npm run cleanup",
+    "cy:run:ui": "cypress run --spec 'cypress/integration/UI/**/*' --headless --browser chrome",
+    "precy:run:api": "npm run cleanup",
+    "cy:run:api": "cypress run --spec 'cypress/integration/API/**/*' --headless --browser chrome",
+    "precy:run:wip": "npm run cleanup",
+    "cy:run:wip": "cypress run --spec 'cypress/integration/UI/article/*' --headless --browser chrome"
   }
 }
