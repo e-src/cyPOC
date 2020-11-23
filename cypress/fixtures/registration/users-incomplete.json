@@ -1,0 +1,57 @@
+[
+  {
+    "request": {},
+    "response": {
+      "errors": {
+          "message": "Cannot read property 'username' of undefined",
+          "error": {}
+      }
+  },
+    "status": 500
+  },
+  {
+    "request": {
+      "user": {
+        "username": "karen",
+        "email": "karen@local.host"
+      }
+    },
+    "response": {
+      "errors": {
+          "message": "The \"password\" argument must be of type string or an instance of ArrayBuffer, Buffer, TypedArray, or DataView. Received undefined",
+          "error": {
+              "code": "ERR_INVALID_ARG_TYPE"
+          }
+      }
+    },
+    "status": 500
+  },
+  {
+    "request": {
+      "user": {
+        "username": "chad",
+        "password": "chad"
+      }
+    },
+    "response": {
+      "errors": {
+          "email": "can't be blank"
+      }
+    },
+    "status": 422
+  },
+  {
+    "request": {
+      "user": {
+        "email": "chad@local.host",
+        "password": "chad"
+      }
+    },
+    "response": {
+      "errors": {
+          "username": "can't be blank"
+      }
+    },
+    "status": 422
+  }
+]
