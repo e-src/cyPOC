@@ -22,6 +22,6 @@
     "precy:run:api": "npm run cleanup",
     "cy:run:api": "cypress run --spec 'cypress/integration/API/**/*' --headless --browser chrome",
     "precy:run:wip": "npm run cleanup",
-    "cy:run:wip": "cypress run --spec 'cypress/integration/UI/article/*' --headless --browser chrome"
+    "cy:run:wip": "cypress run --spec 'cypress/integration/API/registration/*' --headless --browser chrome"
   }
 }
