@@ -1,0 +1,56 @@
+/// <reference types="cypress" />
+
+Cypress.config('baseUrl', Cypress.config('API_ROOT'));
+
+describe('Authentication endpoint', () => {
+
+  before(() => {
+    cy.resetDB();
+  });
+
+  it('cannot login without a password', () => {
+    cy.fixture('authentication/user-payloads').then((fx) => {
+      cy.request({
+        method: 'POST',
+        url: '/users/login',
+        body: fx.userNoPassword,
+        failOnStatusCode: false
+      })
+      .then((response) => {
+        expect(response.status).to.equal(422);
+        expect(response.body.errors.password).to.equal('can\'t be blank');
+      })
+    })
+  });
+
+  it('cannot login without a username', () => {
+    cy.fixture('authentication/user-payloads').then((fx) => {
+      cy.request({
+        method: 'POST',
+        url: '/users/login',
+        body: fx.userNoEmail,
+        failOnStatusCode: false
+      })
+      .then((response) => {
+        expect(response.status).to.equal(422);
+        expect(response.body.errors.email).to.equal('can\'t be blank');
+      })
+    })
+  });
+
+  it('can login with proper credentials', () => {
+    cy.fixture('authentication/user-payloads').then((fx) => {
+      cy.request({
+        method: 'POST',
+        url: '/users/login',
+        body: fx.validUser
+      })
+      .then((response) => {
+        expect(response.status).to.equal(200);
+        expect(response.body.user.email).to.equal(fx.validUser.user.email);
+        expect(response.body.user.token).not.to.be.empty;
+      })
+    })
+  });
+
+})
