@@ -6,7 +6,7 @@ describe('Registration endpoint', () => {
 
   before(() => {
     cy.resetDB();
-  })
+  });
 
   it('successfully registers a user', () => {
     cy.fixture('registration/user-karen').then((fx) => {
