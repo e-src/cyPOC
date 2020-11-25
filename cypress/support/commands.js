@@ -22,7 +22,8 @@
 // import * as loginSelect from '../selectors/login-selectors';
 
 Cypress.Commands.add("loginAs", (user, failOnStatusCode) => {
-
+  
+  // check if 2nd parameter has been passed
   let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
 
   cy.request({
