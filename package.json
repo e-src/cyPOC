@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "cypress": "^5.6.0",
+    "cypress": "^6.0.0",
     "cypress-multi-reporters": "^1.4.0",
     "cypress-xpath": "^1.6.1",
     "mocha": "^8.2.1",
@@ -22,6 +22,6 @@
     "precy:run:api": "npm run cleanup",
     "cy:run:api": "cypress run --spec 'cypress/integration/API/**/*' --headless --browser chrome",
     "precy:run:wip": "npm run cleanup",
-    "cy:run:wip": "cypress run --spec 'cypress/integration/API/authentication/*' --headless --browser chrome"
+    "cy:run:wip": "cypress run --spec 'cypress/integration/API/user/*' --headless --browser chrome"
   }
 }
