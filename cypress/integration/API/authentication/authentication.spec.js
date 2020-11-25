@@ -39,15 +39,15 @@ describe('Authentication endpoint', () => {
   });
 
   it('can login with proper credentials', () => {
-    cy.fixture('authentication/user-payloads').then((fx) => {
+    cy.fixture('authentication/default-user').then((fx) => {
       cy.request({
         method: 'POST',
         url: '/users/login',
-        body: fx.validUser
+        body: fx
       })
       .then((response) => {
         expect(response.status).to.equal(200);
-        expect(response.body.user.email).to.equal(fx.validUser.user.email);
+        expect(response.body.user.email).to.equal(fx.user.email);
         expect(response.body.user.token).not.to.be.empty;
       })
     })

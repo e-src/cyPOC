@@ -38,6 +38,19 @@ Cypress.Commands.add("login", (email, password) => {
   cy.visit('/');
 });
 
+Cypress.Commands.add("loginAsDefaultUser", () => {
+  cy.fixture('authentication/default-user').then((fx) => {
+    cy.request({
+      method: 'POST',
+      url: `${Cypress.config('API_ROOT')}/users/login`,
+      body: fx
+    })
+    .then((response) => {
+      window.localStorage.setItem('jwt', response.body.user.token);
+    })
+  })
+});
+
 Cypress.Commands.add("resetDB", () => {
   cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
 });

@@ -1,10 +1,4 @@
 {
   "userNoPassword": {"user":{"email": "chad@local.host"}},
-  "userNoEmail": {"user":{"password": ""}},
-  "validUser": {
-    "user": {
-      "email": "user@local.host",
-      "password": "user"
-      }
-    }
+  "userNoEmail": {"user":{"password": ""}}
 }
