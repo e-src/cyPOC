@@ -10,12 +10,7 @@ describe('Authentication endpoint', () => {
 
   it('cannot login without a password', () => {
     cy.fixture('authentication/user-payloads').then((fx) => {
-      cy.request({
-        method: 'POST',
-        url: '/users/login',
-        body: fx.userNoPassword,
-        failOnStatusCode: false
-      })
+      cy.loginAs(fx.userNoPassword, false)
       .then((response) => {
         expect(response.status).to.equal(422);
         expect(response.body.errors.password).to.equal('can\'t be blank');
@@ -25,12 +20,7 @@ describe('Authentication endpoint', () => {
 
   it('cannot login without a username', () => {
     cy.fixture('authentication/user-payloads').then((fx) => {
-      cy.request({
-        method: 'POST',
-        url: '/users/login',
-        body: fx.userNoEmail,
-        failOnStatusCode: false
-      })
+      cy.loginAs(fx.userNoEmail, false)
       .then((response) => {
         expect(response.status).to.equal(422);
         expect(response.body.errors.email).to.equal('can\'t be blank');
@@ -40,11 +30,7 @@ describe('Authentication endpoint', () => {
 
   it('can login with proper credentials', () => {
     cy.fixture('authentication/default-user').then((fx) => {
-      cy.request({
-        method: 'POST',
-        url: '/users/login',
-        body: fx
-      })
+      cy.loginAs(fx)
       .then((response) => {
         expect(response.status).to.equal(200);
         expect(response.body.user.email).to.equal(fx.user.email);

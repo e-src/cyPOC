@@ -21,14 +21,19 @@
 
 // import * as loginSelect from '../selectors/login-selectors';
 
-Cypress.Commands.add("loginAs", (user) => {
+Cypress.Commands.add("loginAs", (user, failOnStatusCode) => {
+
+  let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
+
   cy.request({
     method: 'POST',
     url: `${Cypress.config('API_ROOT')}/users/login`,
-    body: user
+    body: user,
+    failOnStatusCode: validRequest
   })
   .then((response) => {
-    window.localStorage.setItem('jwt', response.body.user.token);
+    if(validRequest)
+      window.localStorage.setItem('jwt', response.body.user.token);
   })
 });
 
