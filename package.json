@@ -1,4 +1,8 @@
 {
+  "name": "cyPOC",
+  "version": "0.1.0",
+  "description": "Cypress Test Framework - Proof of Concept",
+  "author": "Eugene Tutorin",
   "devDependencies": {
     "cypress": "^6.0.0",
     "cypress-multi-reporters": "^1.4.0",
