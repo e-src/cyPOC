@@ -21,6 +21,10 @@
 
 // import * as loginSelect from '../selectors/login-selectors';
 
+Cypress.Commands.add("resetDB", () => {
+  cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
+});
+
 Cypress.Commands.add("loginAs", (user, failOnStatusCode) => {
   
   // check if 2nd parameter has been passed
@@ -44,6 +48,15 @@ Cypress.Commands.add("loginAsDefaultUser", () => {
   })
 });
 
-Cypress.Commands.add("resetDB", () => {
-  cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
+Cypress.Commands.add("registerUser", (user, failOnStatusCode) => {
+
+  // check if 2nd parameter has been passed
+  let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
+
+  cy.request({
+    method: 'POST',
+    url: '/users',
+    body: user,
+    failOnStatusCode: validRequest
+  })
 });
