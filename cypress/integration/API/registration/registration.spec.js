@@ -10,11 +10,8 @@ describe('Registration endpoint', () => {
 
   it('successfully registers a user', () => {
     cy.fixture('registration/user-karen').then((fx) => {
-        cy.request({
-            method: 'POST',
-            url: '/users',
-            body: fx
-        }).then((response) => {
+      cy.registerUser(fx)
+        .then((response) => {
             expect(response.status).to.equal(200);
             expect(response.body.user.username).to.equal(fx.user.username);
             expect(response.body.user.token).not.to.be.empty;
@@ -27,20 +24,13 @@ describe('Registration endpoint', () => {
     cy.fixture('registration/users-incomplete').then((fixture) => {
       cy.wrap(fixture)
         .each(fx => {
-          cy.request({
-            method: 'POST',
-            url: '/users',
-            body: fx.request,
-            failOnStatusCode: false
-          }).then((response) => {
+          cy.registerUser(fx.request, false)
+          .then((response) => {
             expect(response.status).to.equal(fx.status);
             expect(response.body).to.deep.equal(fx.response);
           })
         })
-    })
-    
+    })  
   });
-
-
 
 })

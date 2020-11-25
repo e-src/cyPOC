@@ -21,36 +21,42 @@
 
 // import * as loginSelect from '../selectors/login-selectors';
 
-Cypress.Commands.add("login", (email, password) => {
+Cypress.Commands.add("resetDB", () => {
+  cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
+});
+
+Cypress.Commands.add("loginAs", (user, failOnStatusCode) => {
+  
+  // check if 2nd parameter has been passed
+  let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
+
   cy.request({
     method: 'POST',
     url: `${Cypress.config('API_ROOT')}/users/login`,
-    body: {
-      "user": {
-        "email": email,
-        "password": password
-      }
-    }
+    body: user,
+    failOnStatusCode: validRequest
   })
   .then((response) => {
-    window.localStorage.setItem('jwt', response.body.user.token);
+    if(validRequest)
+      window.localStorage.setItem('jwt', response.body.user.token);
   })
-  cy.visit('/');
 });
 
 Cypress.Commands.add("loginAsDefaultUser", () => {
   cy.fixture('authentication/default-user').then((fx) => {
-    cy.request({
-      method: 'POST',
-      url: `${Cypress.config('API_ROOT')}/users/login`,
-      body: fx
-    })
-    .then((response) => {
-      window.localStorage.setItem('jwt', response.body.user.token);
-    })
+    cy.loginAs(fx);
   })
 });
 
-Cypress.Commands.add("resetDB", () => {
-  cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
+Cypress.Commands.add("registerUser", (user, failOnStatusCode) => {
+
+  // check if 2nd parameter has been passed
+  let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
+
+  cy.request({
+    method: 'POST',
+    url: '/users',
+    body: user,
+    failOnStatusCode: validRequest
+  })
 });

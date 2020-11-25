@@ -28,7 +28,7 @@ describe('Login page use cases', () => {
 
   it('requires password', () => {
       select.emailField()
-        .type(Cypress.env('testUser').email);
+        .type('fakeUser@local.host');
       select.submitButton()
         .click();
       select.errorMessage()
@@ -36,22 +36,26 @@ describe('Login page use cases', () => {
   });
 
   it('requires valid username and password', () => {
+    cy.fixture('authentication/default-user').then((fx) => {
       select.emailField()
-        .type(Cypress.env('testUser').email);
+        .type(fx.user.email);
       select.passwordField()
         .type('invalid-password{enter}');
       select.errorMessage()
         .should('contain', 'email or password is invalid');
+    })
   });
 
   it('logins successfully', () => {
+    cy.fixture('authentication/default-user').then((fx) => {
       select.emailField()
-        .type(Cypress.env('testUser').email);
+        .type(fx.user.email);
       select.passwordField()
-        .type(Cypress.env('testUser').password);
+        .type(fx.user.password);
       select.submitButton()
         .click();
       cy.location('pathname').should('equal', '/');
+    })
   })
 
 })
