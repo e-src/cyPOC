@@ -11,10 +11,7 @@ describe('New Post use cases', () => {
   })
 
   beforeEach(() => {
-      cy.login(
-          Cypress.env('testUser').email,
-          Cypress.env('testUser').password
-      );
+      cy.loginAsDefaultUser();
       cy.visit('/editor');
   })
 

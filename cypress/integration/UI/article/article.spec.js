@@ -13,10 +13,8 @@ describe('Article use cases', () => {
   })
 
   beforeEach(() => {
-    cy.login(
-        Cypress.env('testUser').email,
-        Cypress.env('testUser').password
-    );
+    cy.loginAsDefaultUser();
+    cy.visit('/');
     cy.contains('a', 'Global Feed')
     .click()
     .should('have.class', 'active');

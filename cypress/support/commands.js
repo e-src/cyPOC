@@ -21,33 +21,20 @@
 
 // import * as loginSelect from '../selectors/login-selectors';
 
-Cypress.Commands.add("login", (email, password) => {
+Cypress.Commands.add("loginAs", (user) => {
   cy.request({
     method: 'POST',
     url: `${Cypress.config('API_ROOT')}/users/login`,
-    body: {
-      "user": {
-        "email": email,
-        "password": password
-      }
-    }
+    body: user
   })
   .then((response) => {
     window.localStorage.setItem('jwt', response.body.user.token);
   })
-  cy.visit('/');
 });
 
 Cypress.Commands.add("loginAsDefaultUser", () => {
   cy.fixture('authentication/default-user').then((fx) => {
-    cy.request({
-      method: 'POST',
-      url: `${Cypress.config('API_ROOT')}/users/login`,
-      body: fx
-    })
-    .then((response) => {
-      window.localStorage.setItem('jwt', response.body.user.token);
-    })
+    cy.loginAs(fx);
   })
 });
 

@@ -5,10 +5,5 @@
   "reporterOptions": {
     "configFile": "reporter-config.json"
   },
-  "env": {
-    "testUser": {
-      "email": "user@local.host",
-      "password": "user"
-    }
-  }
+  "env": {}
 }
