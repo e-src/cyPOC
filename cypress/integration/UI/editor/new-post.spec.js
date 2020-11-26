@@ -30,24 +30,13 @@ describe('New Post use cases', () => {
   });
 
   it('publishes a new post', () => {
-
-    let title = 'Look at this cool article!';
-    let about = 'This article is about.. nothing, really.';
-    let body = 'How much ground would a groundhog hog, if a groundhog could hog ground?\n' +
-    'A groundhog would hog all the ground he could hog, if a groundhog could hog ground.';
-
-    select.articleTitle()
-      .type(title);
-    select.articleAbout()
-      .type(about);
-    select.articleBody()
-      .type(body);
-    select.publishButton()
-      .click();
-    // TODO: this piece goes into article's area
-    cy.contains('h1', title);
-    articleContent()
-      .should('contain', body);
+    cy.fixture("articles/article-to-post-by-user").then((fx) => {
+      cy.populateArticle(fx);
+      // confirm article details after publishing
+      cy.contains('h1', fx.article.title);
+      articleContent()
+        .should('contain', fx.article.body);
+    })
   });
 
 })

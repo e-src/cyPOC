@@ -3,7 +3,6 @@
 // import a set of selectors
 import * as select from '../../../selectors/article-selectors';
 import * as editorSelector from '../../../selectors/editor-selectors';
-import { findArticleByTitle } from '../../../selectors/feed-selectors';
 import { findArticleByAboutText } from '../../../selectors/feed-selectors';
 
 describe('Article use cases', () => {
@@ -34,8 +33,7 @@ describe('Article use cases', () => {
 
   it('confirms user cannot edit or delete admin article', () => {
     cy.fixture('articles/default-article').as('article').then((article) => {
-      findArticleByTitle(article.title)
-        .click();
+      cy.selectArticleByTitle(article.title)
       select.editArticle()
         .should('not.exist');
       select.deleteArticle()
@@ -48,9 +46,7 @@ describe('Article use cases', () => {
     let comment = 'Here goes my comment';
 
     cy.fixture('articles/default-article').as('article').then((article) => {
-      // TODO: can be replaced with API call (with more occurances below)
-      findArticleByTitle(article.title)
-        .click();
+      cy.selectArticleByTitle(article.title)
       select.commentSection()
         .should('have.attr', 'placeholder', 'Write a comment...')
         .type(comment);
@@ -64,8 +60,7 @@ describe('Article use cases', () => {
 
   it('user can delete its comment', () => {
     cy.fixture('articles/default-article').as('article').then((article) => {
-      findArticleByTitle(article.title)
-        .click();
+      cy.selectArticleByTitle(article.title)
       select.deleteButtonForComment(article.userComment)
         .should('exist')
         .click();
@@ -76,8 +71,7 @@ describe('Article use cases', () => {
 
   it('user cannot delete admin comment', () => {
     cy.fixture('articles/default-article').as('article').then((article) => {
-      findArticleByTitle(article.title)
-        .click();
+      cy.selectArticleByTitle(article.title)
       select.deleteButtonForComment(article.adminComment)
         .should('not.exist');      
     })
@@ -85,8 +79,7 @@ describe('Article use cases', () => {
 
   it('user cannot edit or delete admin article', () => {
     cy.fixture('articles/default-article').then((article) => {
-      findArticleByTitle(article.title)
-        .click();
+      cy.selectArticleByTitle(article.title)
     select.deleteArticle()
       .should('not.exist');
     select.editArticle()
@@ -96,8 +89,7 @@ describe('Article use cases', () => {
 
   it('user can delete their article', () => {
     cy.fixture('articles/user-articles').then((articles) => {
-      findArticleByTitle(articles.articleToDelete)
-        .click();
+      cy.selectArticleByTitle(articles.articleToDelete)
     select.deleteArticle()
       .should('exist')
       .click()
@@ -111,19 +103,17 @@ describe('Article use cases', () => {
     let title = 'Edited Article';
 
     cy.fixture('articles/user-articles').then((articles) => {
-      findArticleByTitle(articles.articleToEdit)
+      cy.selectArticleByTitle(articles.articleToEdit)
+      select.editArticle()
+        .should('exist')
+        .click()
+      cy.location('pathname')
+        .should('contain', 'editor/article-to-edit');
+      editorSelector.articleTitle()
+        .type('{selectall}{backspace}' + title);
+      editorSelector.publishButton()
         .click();
-    select.editArticle()
-      .should('exist')
-      .click()
-    cy.location('pathname')
-      .should('contain', 'editor/article-to-edit');
-    editorSelector.articleTitle()
-      .type('{selectall}{backspace}' + title);
-    editorSelector.publishButton()
-      .click();
-    cy.contains('h1', title);
-    
+      cy.contains('h1', title);
     })
   });
 

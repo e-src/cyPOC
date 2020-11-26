@@ -19,23 +19,21 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-// import * as loginSelect from '../selectors/login-selectors';
+import * as editorSelector from '../selectors/editor-selectors';
 
 Cypress.Commands.add("resetDB", () => {
   cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
 });
 
 Cypress.Commands.add("loginAs", (user, failOnStatusCode) => {
-  
   // check if 2nd parameter has been passed
   let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
-
-  cy.request({
+  cy.api({
     method: 'POST',
     url: `${Cypress.config('API_ROOT')}/users/login`,
     body: user,
     failOnStatusCode: validRequest
-  })
+  }, `login as ${user.user.email}`)
   .then((response) => {
     if(validRequest)
       window.localStorage.setItem('jwt', response.body.user.token);
@@ -49,14 +47,83 @@ Cypress.Commands.add("loginAsDefaultUser", () => {
 });
 
 Cypress.Commands.add("registerUser", (user, failOnStatusCode) => {
-
   // check if 2nd parameter has been passed
   let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
-
-  cy.request({
+  cy.api({
     method: 'POST',
-    url: '/users',
+    url: `${Cypress.config('API_ROOT')}/users`,
     body: user,
     failOnStatusCode: validRequest
-  })
+  }, 'register user')
+});
+
+Cypress.Commands.add("getCurrentUser", () => {
+  cy.api({
+    method: 'GET',
+    url: `${Cypress.config('API_ROOT')}/user`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  }, 'get current user')
+});
+
+Cypress.Commands.add("updateUser", (requestBody, failOnStatusCode) => {
+  // check if 2nd parameter has been passed
+  let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
+  cy.api({
+    method: 'PUT',
+    url: `${Cypress.config('API_ROOT')}/user`,
+    body: requestBody,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    },
+    failOnStatusCode: validRequest
+  }, 'update user')
+});
+
+Cypress.Commands.add("getProfile", (profileName) => {
+  cy.api({
+    method: 'GET',
+    url: `${Cypress.config('API_ROOT')}/profiles/${profileName}`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  }, `get profile ${profileName}`)
+});
+
+Cypress.Commands.add("followUser", (userName) => {
+  cy.api({
+    method: 'POST',
+    url: `${Cypress.config('API_ROOT')}/profiles/${userName}/follow`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  }, `follow user ${userName}`)
+});
+
+Cypress.Commands.add("unfollowUser", (userName) => {
+  cy.api({
+    method: 'DELETE',
+    url: `${Cypress.config('API_ROOT')}/profiles/${userName}/follow`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  }, `unfollow user ${userName}`)
+});
+
+// TODO: add tags support later on
+Cypress.Commands.add("populateArticle", (articleFx) => {
+  editorSelector.articleTitle()
+    .type(articleFx.article.title);
+  editorSelector.articleAbout()
+    .type(articleFx.article.description);
+  editorSelector.articleBody()
+    .type(articleFx.article.body);
+  editorSelector.publishButton()
+  .click();
+});
+
+Cypress.Commands.add("selectArticleByTitle", (articleTitle) => {
+  cy.xpath(`//h1[contains(text(),'${articleTitle}')]`)
+    .click();
 });
