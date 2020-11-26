@@ -19,7 +19,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-// import * as loginSelect from '../selectors/login-selectors';
+import * as editorSelector from '../selectors/editor-selectors';
 
 Cypress.Commands.add("resetDB", () => {
   cy.exec('mongorestore --drop -d conduit cypress/db-sample/conduit');
@@ -115,4 +115,16 @@ Cypress.Commands.add("unfollowUser", (userName) => {
       'authorization': `Token ${window.localStorage.getItem('jwt')}`
     }
   })
+});
+
+// TODO: add tags support later on
+Cypress.Commands.add("populateArticle", (articleFx) => {
+  editorSelector.articleTitle()
+    .type(articleFx.article.title);
+  editorSelector.articleAbout()
+    .type(articleFx.article.description);
+  editorSelector.articleBody()
+    .type(articleFx.article.body);
+  editorSelector.publishButton()
+  .click();
 });
