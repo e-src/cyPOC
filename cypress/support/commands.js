@@ -60,3 +60,59 @@ Cypress.Commands.add("registerUser", (user, failOnStatusCode) => {
     failOnStatusCode: validRequest
   })
 });
+
+Cypress.Commands.add("getCurrentUser", () => {
+  cy.request({
+    method: 'GET',
+    url: `${Cypress.config('API_ROOT')}/user`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  })
+});
+
+Cypress.Commands.add("updateUser", (requestBody, failOnStatusCode) => {
+
+  // check if 2nd parameter has been passed
+  let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
+
+  cy.request({
+    method: 'PUT',
+    url: `${Cypress.config('API_ROOT')}/user`,
+    body: requestBody,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    },
+    failOnStatusCode: validRequest
+  })
+});
+
+Cypress.Commands.add("getProfile", (profileName) => {
+  cy.request({
+    method: 'GET',
+    url: `${Cypress.config('API_ROOT')}/profiles/${profileName}`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  })
+});
+
+Cypress.Commands.add("followUser", (userName) => {
+  cy.request({
+    method: 'POST',
+    url: `${Cypress.config('API_ROOT')}/profiles/${userName}/follow`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  })
+});
+
+Cypress.Commands.add("unfollowUser", (userName) => {
+  cy.request({
+    method: 'DELETE',
+    url: `${Cypress.config('API_ROOT')}/profiles/${userName}/follow`,
+    headers: {
+      'authorization': `Token ${window.localStorage.getItem('jwt')}`
+    }
+  })
+});
