@@ -128,3 +128,8 @@ Cypress.Commands.add("populateArticle", (articleFx) => {
   editorSelector.publishButton()
   .click();
 });
+
+Cypress.Commands.add("selectArticleByTitle", (articleTitle) => {
+  cy.xpath(`//h1[contains(text(),'${articleTitle}')]`)
+    .click();
+});
