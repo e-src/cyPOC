@@ -55,7 +55,7 @@ Cypress.Commands.add("registerUser", (user, failOnStatusCode) => {
 
   cy.request({
     method: 'POST',
-    url: '/users',
+    url: `${Cypress.config('API_ROOT')}/users`,
     body: user,
     failOnStatusCode: validRequest
   })

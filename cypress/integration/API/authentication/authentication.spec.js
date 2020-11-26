@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-Cypress.config('baseUrl', Cypress.config('API_ROOT'));
-
 describe('Authentication endpoint', () => {
 
   before(() => {
