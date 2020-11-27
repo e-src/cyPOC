@@ -7,6 +7,7 @@
     "@bahmutov/cy-api": "^1.4.3",
     "@testing-library/cypress": "^7.0.2",
     "cypress": "^6.0.0",
+    "cypress-failed-log": "^2.7.0",
     "cypress-log-to-output": "^1.1.2",
     "cypress-multi-reporters": "^1.4.0",
     "cypress-xpath": "^1.6.1",

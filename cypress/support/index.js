@@ -23,6 +23,7 @@ import addContext from 'mochawesome/addContext';
 
 // Import xpath command. Source: https://github.com/cypress-io/cypress-xpath
 require('cypress-xpath');
+require('cypress-failed-log');
 
 // code that will be listening on the test:after:run event (for adding the screenshot to the test result)
 Cypress.on('test:after:run', (test, runnable) => {
