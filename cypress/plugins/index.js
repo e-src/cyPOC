@@ -18,11 +18,18 @@
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+
+  on('task', {
+    failed: require('cypress-failed-log/src/failed')(),
+  })
+
   require('cypress-log-to-output').install(on, (type, event) => {
 
-    if (event.level === 'error' || event.type === 'error') {
-      return true
-    }
+    // disabled for the time being
+    
+    // if (event.level === 'error' || event.type === 'error') {
+    //   return true
+    // }
 
     return false
   })
