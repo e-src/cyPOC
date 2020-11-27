@@ -16,17 +16,17 @@ describe('New Post use cases', () => {
   })
 
   it('shows required UI elemets', () => {
-      select.articleTitle()
-        .should('have.attr', 'placeholder', 'Article Title');
-      select.articleAbout()
-        .should('have.attr', 'placeholder', 'What\'s this article about?');
-      select.articleBody()
-        .should('have.attr', 'placeholder', 'Write your article (in markdown)');  
-      select.articleTags()
-        .should('have.attr', 'placeholder', 'Enter tags');
-      select.publishButton()
-        .should('have.text', 'Publish Article')
-        .and('be.enabled');
+    cy.findByPlaceholderText('Article Title')
+      .should('exist');
+    cy.findByPlaceholderText('What\'s this article about?')
+      .should('exist');
+    cy.findByPlaceholderText('Write your article (in markdown)')
+      .should('exist');
+    cy.findByPlaceholderText('Enter tags')
+      .should('exist');
+    cy.findByRole('button')
+      .should('have.text', 'Publish Article')
+      .and('be.enabled');
   });
 
   it('publishes a new post', () => {

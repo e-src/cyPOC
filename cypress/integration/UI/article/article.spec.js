@@ -47,8 +47,8 @@ describe('Article use cases', () => {
 
     cy.fixture('articles/default-article').as('article').then((article) => {
       cy.selectArticleByTitle(article.title)
-      select.commentSection()
-        .should('have.attr', 'placeholder', 'Write a comment...')
+      cy.findAllByPlaceholderText('Write a comment...')
+        .should('exist')
         .type(comment);
       select.postCommentButton()
         .should('be.enabled')
