@@ -26,6 +26,7 @@ Cypress.Commands.add("resetDB", () => {
 });
 
 Cypress.Commands.add("loginAs", (user, failOnStatusCode) => {
+  cy.log(`--> Logging in as ${user.user.email}`);
   // check if 2nd parameter has been passed
   let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
   cy.api({
@@ -49,6 +50,7 @@ Cypress.Commands.add("loginAsDefaultUser", () => {
 Cypress.Commands.add("registerUser", (user, failOnStatusCode) => {
   // check if 2nd parameter has been passed
   let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
+  cy.log('--> Registering a user');
   cy.api({
     method: 'POST',
     url: `${Cypress.config('API_ROOT')}/users`,
@@ -58,6 +60,7 @@ Cypress.Commands.add("registerUser", (user, failOnStatusCode) => {
 });
 
 Cypress.Commands.add("getCurrentUser", () => {
+  cy.log('--> Getting current user');
   cy.api({
     method: 'GET',
     url: `${Cypress.config('API_ROOT')}/user`,
@@ -68,6 +71,7 @@ Cypress.Commands.add("getCurrentUser", () => {
 });
 
 Cypress.Commands.add("updateUser", (requestBody, failOnStatusCode) => {
+  cy.log('--> Updating user');
   // check if 2nd parameter has been passed
   let validRequest = typeof failOnStatusCode === 'boolean' ? failOnStatusCode : true
   cy.api({
@@ -82,6 +86,7 @@ Cypress.Commands.add("updateUser", (requestBody, failOnStatusCode) => {
 });
 
 Cypress.Commands.add("getProfile", (profileName) => {
+  cy.log(`--> Getting profile ${profileName}`);
   cy.api({
     method: 'GET',
     url: `${Cypress.config('API_ROOT')}/profiles/${profileName}`,
@@ -92,6 +97,7 @@ Cypress.Commands.add("getProfile", (profileName) => {
 });
 
 Cypress.Commands.add("followUser", (userName) => {
+  cy.log(`--> Following user ${userName}`);
   cy.api({
     method: 'POST',
     url: `${Cypress.config('API_ROOT')}/profiles/${userName}/follow`,
@@ -102,6 +108,7 @@ Cypress.Commands.add("followUser", (userName) => {
 });
 
 Cypress.Commands.add("unfollowUser", (userName) => {
+  cy.log(`--> Unfollowing user ${userName}`);
   cy.api({
     method: 'DELETE',
     url: `${Cypress.config('API_ROOT')}/profiles/${userName}/follow`,
@@ -113,6 +120,7 @@ Cypress.Commands.add("unfollowUser", (userName) => {
 
 // TODO: add tags support later on
 Cypress.Commands.add("populateArticle", (articleFx) => {
+  cy.log('--> Populating the article');
   editorSelector.articleTitle()
     .type(articleFx.article.title);
   editorSelector.articleAbout()
@@ -124,6 +132,7 @@ Cypress.Commands.add("populateArticle", (articleFx) => {
 });
 
 Cypress.Commands.add("selectArticleByTitle", (articleTitle) => {
+  cy.log(`--> Selecting article ${articleTitle}`);
   cy.xpath(`//h1[contains(text(),'${articleTitle}')]`)
     .click();
 });
